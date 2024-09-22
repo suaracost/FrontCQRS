@@ -17,7 +17,7 @@
         android:gravity="center"
         android:letterSpacing="0.07"
         android:lineSpacingExtra="26sp"
-        android:text="Crear persona"
+        android:text="Editar persona"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
@@ -38,7 +38,7 @@
 
     <!-- Campo de entrada de la cédula debajo de la animación -->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/cedulaCreate"
+        android:id="@+id/cedulaEditar"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
         android:hint="Escribe el nombre"
         app:boxStrokeWidth="1dp"
         app:hintEnabled="true"
-        app:layout_constraintTop_toBottomOf="@id/loginCedula"
+        app:layout_constraintTop_toBottomOf="@id/cedulaEditar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -92,7 +92,7 @@
 
     <!-- Botón debajo de los campos de entrada -->
     <Button
-        android:id="@+id/botonCrear"
+        android:id="@+id/botonEditar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Crear"

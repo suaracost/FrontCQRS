@@ -108,6 +108,15 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)  // Iniciar la actividad
         }
 
+        val editarPersona = findViewById<Button>(R.id.boton2)
+
+        // Configurar el listener para el botón editarPersona
+        editarPersona.setOnClickListener {
+            // Crear un intent para iniciar la actividad editarPersona
+            val intent = Intent(this, EditarPersona::class.java)
+            startActivity(intent)  // Iniciar la actividad
+        }
+
     }
 }
 

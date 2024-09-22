@@ -23,7 +23,7 @@ interface GraphQLApiService {
     // Actualizar una persona por ID
     @Headers("Content-Type: application/json")
     @PUT("personas_write/{id}")
-    fun updatePersona(@Path("id") id: String, @Body persona: Persona): Call<Persona>
+    fun updatePersona(@Path("id") id: String, @Body personaRequest: PersonaRequest): Call<Persona>
 
     // Eliminar una persona por ID
     @DELETE("personas_write/{id}")
