@@ -18,7 +18,7 @@ object ApiClient {
                 .build()
 
             retrofit = Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:3000/")  // Cambia esto por la URL de tu API
+                .baseUrl("http://10.0.2.2:3000/")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
