@@ -1,5 +1,6 @@
 package com.example.frontcqrs
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
@@ -97,6 +98,16 @@ class MainActivity : AppCompatActivity() {
                 textBox.error = "Por favor ingrese un ID válido"
             }
         }
+
+        val crearPersona = findViewById<Button>(R.id.boton7)
+
+        // Configurar el listener para el botón crearPersona
+        crearPersona.setOnClickListener {
+            // Crear un intent para iniciar la actividad CrearPersona
+            val intent = Intent(this, CrearPersona::class.java)
+            startActivity(intent)  // Iniciar la actividad
+        }
+
     }
 }
 

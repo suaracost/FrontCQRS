@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">FrontCQRS</string>
     <string name="mensajeBienvenida">Bienvenido</string>
-    <string name="tituloIniciarSesion">Taller Alejandro Suarez, Santiago Yáñez, Hermann Hernandez</string>
+    <string name="tituloIniciarSesion">Taller Alejandro Suárez, Santiago Yáñez, Hermann Hernández</string>
     <string name="botonBuscar">Buscar</string>
     <string name="escribirCedula">Escribe la cedula</string>
 

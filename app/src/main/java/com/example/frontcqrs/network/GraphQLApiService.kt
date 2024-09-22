@@ -2,6 +2,7 @@ package com.example.frontcqrs.network
 
 import com.example.frontcqrs.models.Persona
 import com.example.frontcqrs.models.Amistad
+import com.example.frontcqrs.models.PersonaRequest
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -15,10 +16,9 @@ interface GraphQLApiService {
     @GET("personas/{id}")
     fun getPersonaById(@Path("id") id: String): Call<Persona>
 
-    // Crear una nueva persona
     @Headers("Content-Type: application/json")
     @POST("personas_write")
-    fun createPersona(@Body persona: Persona): Call<Persona>
+    fun createPersona(@Body personaRequest: PersonaRequest): Call<Persona>
 
     // Actualizar una persona por ID
     @Headers("Content-Type: application/json")
