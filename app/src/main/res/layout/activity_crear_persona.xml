@@ -7,7 +7,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <!-- Título en la parte superior -->
     <TextView
         android:id="@+id/tituloTaller"
         android:layout_width="wrap_content"
@@ -24,7 +23,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Animación de Lottie debajo del título -->
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieCedula"
         android:layout_width="250dp"
@@ -36,34 +34,6 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/cedula" />
 
-    <!-- Campo de entrada de la cédula debajo de la animación -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/cedulaCreate"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="10dp"
-        app:endIconMode="clear_text"
-        android:inputType="number"
-        android:hint="@string/escribirCedula"
-        app:boxStrokeWidth="1dp"
-        app:hintEnabled="true"
-        app:layout_constraintTop_toBottomOf="@id/lottieCedula"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:inputType="number"
-            android:maxLines="1"
-            android:singleLine="true" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Campo de entrada del nombre debajo de la cédula -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nombre"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -78,7 +48,7 @@
         android:hint="Escribe el nombre"
         app:boxStrokeWidth="1dp"
         app:hintEnabled="true"
-        app:layout_constraintTop_toBottomOf="@id/loginCedula"
+        app:layout_constraintTop_toBottomOf="@id/lottieCedula"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -90,7 +60,32 @@
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Botón debajo de los campos de entrada -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/cedulaCreate"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        app:endIconMode="clear_text"
+        android:inputType="number"
+        android:hint="@string/escribirCedula"
+        app:boxStrokeWidth="1dp"
+        app:hintEnabled="true"
+        app:layout_constraintTop_toBottomOf="@id/nombre"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:inputType="number"
+            android:maxLines="1"
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <Button
         android:id="@+id/botonCrear"
         android:layout_width="wrap_content"
@@ -99,7 +94,7 @@
         android:textSize="16sp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        app:layout_constraintTop_toBottomOf="@id/nombre"
+        app:layout_constraintTop_toBottomOf="@id/cedulaCreate"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

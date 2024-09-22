@@ -7,7 +7,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <!-- Título en la parte superior -->
     <TextView
         android:id="@+id/tituloTaller"
         android:layout_width="wrap_content"
@@ -24,7 +23,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Animación de Lottie debajo del título -->
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieCedula"
         android:layout_width="250dp"
@@ -36,7 +34,6 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/cedula" />
 
-    <!-- Campo de entrada de la cédula debajo de la animación -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/loginCedula"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -63,7 +60,6 @@
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- GridLayout para los 7 botones distribuidos en dos columnas -->
     <androidx.gridlayout.widget.GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,7 +70,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Botones distribuidos en el grid (2 por fila) -->
         <Button
             android:id="@+id/boton1"
             android:layout_width="0dp"

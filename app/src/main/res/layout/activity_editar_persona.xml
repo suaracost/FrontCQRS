@@ -7,7 +7,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <!-- Título en la parte superior -->
     <TextView
         android:id="@+id/tituloTaller"
         android:layout_width="wrap_content"
@@ -24,7 +23,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Animación de Lottie debajo del título -->
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieCedula"
         android:layout_width="250dp"
@@ -36,7 +34,6 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/cedula" />
 
-    <!-- Campo de entrada de la cédula debajo de la animación -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/cedulaEditar"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -63,7 +60,6 @@
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Campo de entrada del nombre debajo de la cédula -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nombre"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -90,7 +86,6 @@
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Botón debajo de los campos de entrada -->
     <Button
         android:id="@+id/botonEditar"
         android:layout_width="wrap_content"
