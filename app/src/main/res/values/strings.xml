@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">FrontCQRS</string>
+    <string name="mensajeBienvenida">Bienvenido</string>
+    <string name="tituloIniciarSesion">Taller Alejandro Suarez, Santiago Yáñez, Hermann Hernandez</string>
+    <string name="botonBuscar">Buscar</string>
+    <string name="escribirCedula">Escribe la cedula</string>
+
+    <string name="verNombre">Ver nombre</string>
+    <string name="editarPersona">Editar persona</string>
+    <string name="eliminarPersona">Eliminar persona</string>
+    <string name="verAmigos">Ver amigos</string>
+    <string name="crearAmigo">Crear amigo</string>
+    <string name="eliminarAmigo">Eliminar amigo</string>
+    <string name="crearPersona">Crear persona</string>
 </resources>

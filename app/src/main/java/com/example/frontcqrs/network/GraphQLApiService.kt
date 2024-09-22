@@ -5,7 +5,7 @@ import com.example.frontcqrs.models.Amistad
 import retrofit2.Call
 import retrofit2.http.*
 
-interface ApiService {
+interface GraphQLApiService {
 
     // Obtener todas las personas
     @GET("personas")
