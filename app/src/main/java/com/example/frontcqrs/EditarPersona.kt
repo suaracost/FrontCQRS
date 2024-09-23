@@ -34,37 +34,52 @@ class EditarPersona : AppCompatActivity() {
 
         val botonEditar = findViewById<Button>(R.id.botonEditar)
 
-        // Configurar el listener para el botón
         botonEditar.setOnClickListener {
-            val cedula = textBox.editText?.text.toString() // Obtener el texto de la cédula
-            val nombre = textBox2.editText?.text.toString() // Obtener el texto del nombre
+            val cedula = textBox.editText?.text.toString()
+            val nombre = textBox2.editText?.text.toString()
 
-            // Validar que los campos no estén vacíos
             if (cedula.isNotEmpty() && nombre.isNotEmpty()) {
-                // Crear un objeto Persona con los datos del formulario
-                val persona = Persona(cedula, nombre)
-                val personaRequest = PersonaRequest(persona)
-
-                // Hacer la llamada a la API para actualizar la persona
-                val call = apiService.updatePersona(cedula, personaRequest)
-                call.enqueue(object : Callback<Persona> {
-                    override fun onResponse(call: Call<Persona>, response: Response<Persona>) {
+                val call = apiService.getPersonas()
+                call.enqueue(object : Callback<List<Persona>> {
+                    override fun onResponse(call: Call<List<Persona>>, response: Response<List<Persona>>) {
                         if (response.isSuccessful) {
-                            // Mostrar un mensaje de éxito
-                            Toast.makeText(this@EditarPersona, "Persona actualizada exitosamente", Toast.LENGTH_LONG).show()
+                            val personas = response.body() ?: emptyList()
+
+                            val personaAEditar = personas.find { it.cedula == cedula }
+
+                            if (personaAEditar != null) {
+                                val personaActualizada = Persona(personaAEditar.id, personaAEditar.cedula, nombre)
+                                val personaRequest = PersonaRequest(personaActualizada)
+
+                                val callUpdate = apiService.updatePersona(personaAEditar.id.toString(), personaRequest)
+
+                                callUpdate.enqueue(object : Callback<Persona> {
+                                    override fun onResponse(call: Call<Persona>, response: Response<Persona>) {
+                                        if (response.isSuccessful) {
+                                            Toast.makeText(this@EditarPersona, "Persona actualizada exitosamente", Toast.LENGTH_LONG).show()
+                                        } else {
+                                            val errorMessage = response.errorBody()?.string() ?: "Error desconocido"
+                                            Toast.makeText(this@EditarPersona, "Error al actualizar: ${response.code()} - $errorMessage", Toast.LENGTH_LONG).show()
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<Persona>, t: Throwable) {
+                                        Toast.makeText(this@EditarPersona, "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
+                                    }
+                                })
+                            } else {
+                                Toast.makeText(this@EditarPersona, "Persona no encontrada", Toast.LENGTH_SHORT).show()
+                            }
                         } else {
-                            // Mostrar mensaje de error si la respuesta no fue exitosa
-                            Toast.makeText(this@EditarPersona, "Error al actualizar: ${response.code()}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@EditarPersona, "Error al obtener personas: ${response.code()}", Toast.LENGTH_SHORT).show()
                         }
                     }
 
-                    override fun onFailure(call: Call<Persona>, t: Throwable) {
-                        // Manejar errores de conexión
-                        Toast.makeText(this@EditarPersona, "Error de conexión: ${t.message}", Toast.LENGTH_LONG).show()
+                    override fun onFailure(call: Call<List<Persona>>, t: Throwable) {
+                        Toast.makeText(this@EditarPersona, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
                     }
                 })
             } else {
-                // Mostrar mensaje de advertencia si algún campo está vacío
                 if (cedula.isEmpty()) textBox.error = "Por favor ingrese la cédula"
                 if (nombre.isEmpty()) textBox2.error = "Por favor ingrese el nombre"
             }

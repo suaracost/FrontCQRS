@@ -12,7 +12,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Aquí se agregarán dinámicamente los CardViews -->
 
     </LinearLayout>
 
