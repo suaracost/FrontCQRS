@@ -101,7 +101,7 @@
             android:id="@+id/boton5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/crearAmigo"
+            android:text="@string/añadirAmigo"
             android:textSize="16sp"
             app:layout_columnWeight="1"
             app:layout_gravity="fill_horizontal" />

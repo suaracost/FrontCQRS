@@ -20,6 +20,12 @@
         <activity
             android:name=".CrearPersona"
             android:exported="false" />
+
+        <activity
+            android:name=".CrearAmistad"
+            android:exported="false"/>
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

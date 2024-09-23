@@ -9,7 +9,8 @@
     <string name="editarPersona">Editar persona</string>
     <string name="eliminarPersona">Eliminar persona</string>
     <string name="verAmigos">Ver amigos</string>
-    <string name="crearAmigo">Crear amigo</string>
+    <string name="añadirAmigo">Añadir amigo</string>
     <string name="eliminarAmigo">Eliminar amigo</string>
     <string name="crearPersona">Crear persona</string>
+    <string name="cedulaAmigos">123456</string>
 </resources>

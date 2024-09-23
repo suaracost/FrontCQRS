@@ -117,6 +117,21 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)  // Iniciar la actividad
         }
 
+        //val verAmigos = findViewById<Button>(R.id.boton4)
+
+        //verAmigos.setOnClickListener{
+            //val intent = Intent(this, VerAmigos::class.java)
+            //startActivity(intent)
+        //}
+
+        val crearAmistad = findViewById<Button>(R.id.boton5)
+
+        // Listener para crear amistad
+        crearAmistad.setOnClickListener {
+            val intent = Intent(this, CrearAmistad::class.java)
+            startActivity(intent)
+        }
+
     }
 }
 
