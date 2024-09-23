@@ -1,11 +1,13 @@
 package com.example.frontcqrs
 
 import android.os.Bundle
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.frontcqrs.R
+import com.example.frontcqrs.models.Amistad
+import com.example.frontcqrs.models.AmistadRequest
 import com.example.frontcqrs.models.Persona
 import com.example.frontcqrs.network.ApiClient
 import com.example.frontcqrs.network.GraphQLApiService
@@ -17,19 +19,17 @@ class CrearAmistad : AppCompatActivity() {
 
     private lateinit var contenedorAmigos: LinearLayout
     private lateinit var apiService: GraphQLApiService
+    private val cedulaUsuarioActual = "123456789"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crear_amistad)
 
-        // Inicializamos el contenedor de las tarjetas
         contenedorAmigos = findViewById(R.id.contenedorAmigos)
 
-        // Inicializamos Retrofit
         val retrofit = ApiClient.getClient()
         apiService = retrofit.create(GraphQLApiService::class.java)
 
-        // Llamamos a la API para obtener las personas
         obtenerPersonasDesdeApi()
     }
 
@@ -52,7 +52,6 @@ class CrearAmistad : AppCompatActivity() {
     }
 
     private fun mostrarPersonas(listaPersonas: List<Persona>) {
-        // Añadir cada persona como un CardView dinámico
         for (persona in listaPersonas) {
             agregarTarjetaPersona(persona)
         }
@@ -62,10 +61,62 @@ class CrearAmistad : AppCompatActivity() {
         val inflater = layoutInflater
         val cardView = inflater.inflate(R.layout.card_view_layout, contenedorAmigos, false)
 
-        // Mostrar solo la cédula en el TextView
         val tvAmigosName = cardView.findViewById<TextView>(R.id.tvAmigosName)
-        tvAmigosName.text = persona.cedula  // Solo mostrar la cédula
+        tvAmigosName.text = persona.cedula
 
-        contenedorAmigos.addView(cardView) // Añadir la tarjeta al contenedor
+        val btnAgregarAmigo = cardView.findViewById<Button>(R.id.btnAgregarAmigo)
+        btnAgregarAmigo.setOnClickListener {
+            agregarAmistad(persona.cedula)
+        }
+
+        contenedorAmigos.addView(cardView)
     }
+
+    private fun agregarAmistad(cedulaPersona2: String) {
+        val call = apiService.getAmistades()
+        call.enqueue(object : Callback<List<Amistad>> {
+            override fun onResponse(call: Call<List<Amistad>>, response: Response<List<Amistad>>) {
+                if (response.isSuccessful) {
+                    val listaAmistades = response.body() ?: emptyList()
+
+                    // Verificamos si ya existe una amistad con esa persona
+                    val amistadYaExiste = listaAmistades.any {
+                        it.cedula_persona1 == cedulaUsuarioActual && it.cedula_persona2 == cedulaPersona2
+                    }
+
+                    if (amistadYaExiste) {
+                        Toast.makeText(this@CrearAmistad, "Ya has agregado a esta persona", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // Si no existe, la agregamos
+                        crearNuevaAmistad(cedulaPersona2)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<Amistad>>, t: Throwable) {
+                Toast.makeText(this@CrearAmistad, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun crearNuevaAmistad(cedulaPersona2: String) {
+        val amistad = Amistad(0, cedulaUsuarioActual, cedulaPersona2)
+        val amistadRequest = AmistadRequest(amistad)
+
+        val call = apiService.createAmistad(amistadRequest)
+        call.enqueue(object : Callback<Amistad> {
+            override fun onResponse(call: Call<Amistad>, response: Response<Amistad>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(this@CrearAmistad, "Amigo agregado correctamente", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@CrearAmistad, "Error al agregar amigo", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Amistad>, t: Throwable) {
+                Toast.makeText(this@CrearAmistad, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 }

@@ -25,6 +25,10 @@
             android:name=".CrearAmistad"
             android:exported="false"/>
 
+        <activity
+            android:name=".MostrarAmigos"
+            android:exported="false"/>
+
 
         <activity
             android:name=".MainActivity"
