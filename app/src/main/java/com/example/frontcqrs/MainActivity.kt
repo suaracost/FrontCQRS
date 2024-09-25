@@ -65,32 +65,13 @@ class MainActivity : AppCompatActivity() {
             val cedulaPersona = textBox.editText?.text.toString()
 
             if (cedulaPersona.isNotEmpty()) {
-                val call = apiService.getPersonas()
-                call.enqueue(object : Callback<List<Persona>> {
-                    override fun onResponse(call: Call<List<Persona>>, response: Response<List<Persona>>) {
-                        if (response.isSuccessful) {
-                            val personas = response.body() ?: emptyList()
-
-                            val personaAEliminar = personas.find { it.cedula == cedulaPersona }
-
-                            if (personaAEliminar != null) {
-                                eliminarPersonaPorId(apiService, personaAEliminar.id)
-                            } else {
-                                Toast.makeText(this@MainActivity, "Persona no encontrada", Toast.LENGTH_SHORT).show()
-                            }
-                        } else {
-                            Toast.makeText(this@MainActivity, "Error al obtener personas", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<List<Persona>>, t: Throwable) {
-                        Toast.makeText(this@MainActivity, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
-                    }
-                })
+                eliminarPersonaPorCedula(apiService, cedulaPersona) // Ahora llamamos a eliminar por cédula
             } else {
                 textBox.error = "Por favor ingrese una cédula válida"
             }
         }
+
+
 
         val crearPersona = findViewById<Button>(R.id.boton7)
         crearPersona.setOnClickListener {
@@ -117,60 +98,52 @@ class MainActivity : AppCompatActivity() {
         }
 
         val eliminarAmigo = findViewById<Button>(R.id.boton6)
-
         eliminarAmigo.setOnClickListener {
-            val cedulaAmigo = textBox.editText?.text.toString()
+            val cedulaPersona1 = "123456789"  // Cédula de la persona que está haciendo la solicitud
+            val cedulaAmigo = textBox.editText?.text.toString()  // Cédula de la otra persona
 
             if (cedulaAmigo.isNotEmpty()) {
-                val call = apiService.getAmistades()
-                call.enqueue(object : Callback<List<Amistad>> {
-                    override fun onResponse(call: Call<List<Amistad>>, response: Response<List<Amistad>>) {
-                        if (response.isSuccessful) {
-                            val amistades = response.body() ?: emptyList()
-
-                            val amistadAEliminar = amistades.find {
-                                it.cedula_persona2 == cedulaAmigo
-                            }
-
-                            if (amistadAEliminar != null) {
-                                eliminarAmistad(apiService, amistadAEliminar.id)
-                            } else {
-                                Toast.makeText(this@MainActivity, "Amistad no encontrada", Toast.LENGTH_SHORT).show()
-                            }
-                        } else {
-                            Toast.makeText(this@MainActivity, "Error al obtener amistades", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<List<Amistad>>, t: Throwable) {
-                        Toast.makeText(this@MainActivity, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
-                    }
-                })
+                eliminarAmistad(apiService, cedulaPersona1, cedulaAmigo)
             } else {
                 textBox.error = "Por favor ingrese una cédula válida"
             }
         }
+
     }
 
-    private fun eliminarAmistad(apiService: GraphQLApiService, idAmistad: Int) {
-        val call = apiService.deleteAmistad(idAmistad.toString())
+    private fun eliminarAmistad(apiService: GraphQLApiService, cedulaPersona1: String, cedulaPersona2: String) {
+        // Crear el cuerpo de la solicitud
+        val body = HashMap<String, String>()
+        body["cedula_persona2"] = cedulaPersona2
+
+        // Llamar a la API de eliminación
+        val call = apiService.deleteAmistad(cedulaPersona1, body)
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
                     Toast.makeText(this@MainActivity, "Amistad eliminada con éxito", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@MainActivity, "Error al eliminar amistad", Toast.LENGTH_SHORT).show()
+                    val errorMessage = response.errorBody()?.string() ?: "Error desconocido"
+                    Toast.makeText(this@MainActivity, "Error al eliminar amistad: ${response.code()} - $errorMessage", Toast.LENGTH_SHORT).show()
+                    android.util.Log.e("EliminarAmistad", "Error: ${response.code()}, Response: $errorMessage")
                 }
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
+                android.util.Log.e("EliminarAmistad", "Fallo en la conexión: ${t.message}")
             }
         })
     }
 
-    private fun eliminarPersonaPorId(apiService: GraphQLApiService, idPersona: Int) {
-        val call = apiService.deletePersona(idPersona.toString())
+
+
+
+
+
+
+    private fun eliminarPersonaPorCedula(apiService: GraphQLApiService, cedulaPersona: String) {
+        val call = apiService.deletePersona(cedulaPersona) // Llama a la ruta de escritura con la cédula
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
@@ -178,8 +151,6 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     val errorMessage = response.errorBody()?.string() ?: "Error desconocido"
                     Toast.makeText(this@MainActivity, "Error al eliminar persona: ${response.code()} - $errorMessage", Toast.LENGTH_SHORT).show()
-
-                    // Imprimir detalles en el Logcat
                     android.util.Log.e("EliminarPersona", "Error: ${response.code()}, Response: $errorMessage")
                 }
             }
@@ -190,4 +161,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+
+
 }

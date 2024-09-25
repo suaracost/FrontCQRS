@@ -23,12 +23,12 @@ interface GraphQLApiService {
 
     // Actualizar una persona por ID
     @Headers("Content-Type: application/json")
-    @PUT("personas_write/{id}")
-    fun updatePersona(@Path("id") id: String, @Body personaRequest: PersonaRequest): Call<Persona>
+    @PUT("personas_write/{cedula}")
+    fun updatePersona(@Path("cedula") cedula: String, @Body body: HashMap<String, Any>): Call<Persona>
 
     // Eliminar una persona por ID
-    @DELETE("personas_write/{id}")
-    fun deletePersona(@Path("id") id: String): Call<Void>
+    @DELETE("personas_write/{cedula}")
+    fun deletePersona(@Path("cedula") cedula: String): Call<Void>
 
     // Obtener todas las amistades
     @GET("amistades")
@@ -49,6 +49,10 @@ interface GraphQLApiService {
     fun updateAmistad(@Path("id") id: String, @Body amistadRequest: AmistadRequest): Call<Amistad>
 
     // Eliminar una amistad por ID
-    @DELETE("amistades_write/{id}")
-    fun deleteAmistad(@Path("id") id: String): Call<Void>
+    @HTTP(method = "DELETE", path = "amistades_write/{cedula_persona1}", hasBody = true)
+    fun deleteAmistad(
+        @Path("cedula_persona1") cedulaPersona1: String,
+        @Body body: HashMap<String, String>
+    ): Call<Void>
+
 }
