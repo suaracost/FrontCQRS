@@ -4,6 +4,7 @@ import com.example.frontcqrs.models.Persona
 import com.example.frontcqrs.models.Amistad
 import com.example.frontcqrs.models.AmistadRequest
 import com.example.frontcqrs.models.PersonaRequest
+import com.example.frontcqrs.models.PersonaRequestUpdate
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -24,7 +25,7 @@ interface GraphQLApiService {
     // Actualizar una persona por ID
     @Headers("Content-Type: application/json")
     @PUT("personas_write/{cedula}")
-    fun updatePersona(@Path("cedula") cedula: String, @Body body: HashMap<String, Any>): Call<Persona>
+    fun updatePersona(@Path("cedula") cedula: String, @Body body: HashMap<String, Any>): Call<PersonaRequestUpdate>
 
     // Eliminar una persona por ID
     @DELETE("personas_write/{cedula}")
@@ -34,19 +35,10 @@ interface GraphQLApiService {
     @GET("amistades")
     fun getAmistades(): Call<List<Amistad>>
 
-    // Obtener amistad por ID
-    @GET("amistades/{id}")
-    fun getAmistadById(@Path("id") id: String): Call<Amistad>
-
     // Crear una nueva amistad
     @Headers("Content-Type: application/json")
     @POST("amistades_write")
     fun createAmistad(@Body amistadRequest: AmistadRequest): Call<Amistad>
-
-    // Actualizar una amistad por ID
-    @Headers("Content-Type: application/json")
-    @PUT("amistades_write/{id}")
-    fun updateAmistad(@Path("id") id: String, @Body amistadRequest: AmistadRequest): Call<Amistad>
 
     // Eliminar una amistad por ID
     @HTTP(method = "DELETE", path = "amistades_write/{cedula_persona1}", hasBody = true)

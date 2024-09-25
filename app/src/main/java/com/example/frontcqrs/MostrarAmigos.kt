@@ -17,7 +17,8 @@ import retrofit2.Response
 class MostrarAmigos : AppCompatActivity() {
 
     private lateinit var contenedorAmigos: LinearLayout
-    private lateinit var apiService: GraphQLApiService
+    private lateinit var apiServiceRead: GraphQLApiService
+    private lateinit var apiServiceWrite: GraphQLApiService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,14 +26,14 @@ class MostrarAmigos : AppCompatActivity() {
 
         contenedorAmigos = findViewById(R.id.contenedorAmigos)
 
-        val retrofit = ApiClient.getClient()
-        apiService = retrofit.create(GraphQLApiService::class.java)
+        apiServiceRead = ApiClient.getService1().create(GraphQLApiService::class.java)
+        apiServiceWrite = ApiClient.getService2().create(GraphQLApiService::class.java)
 
         obtenerAmigosAgregados()
     }
 
     private fun obtenerAmigosAgregados() {
-        val call = apiService.getAmistades()
+        val call = apiServiceRead.getAmistades()
         call.enqueue(object : Callback<List<Amistad>> {
             override fun onResponse(call: Call<List<Amistad>>, response: Response<List<Amistad>>) {
                 if (response.isSuccessful) {

@@ -1,6 +1,5 @@
 package com.example.frontcqrs.models
 
-data class Persona(
-    val cedula: String,
+data class PersonaUpdate(
     val nombre: String
 )

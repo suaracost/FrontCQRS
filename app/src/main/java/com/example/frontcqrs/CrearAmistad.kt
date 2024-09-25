@@ -18,8 +18,9 @@ import retrofit2.Response
 class CrearAmistad : AppCompatActivity() {
 
     private lateinit var contenedorAmigos: LinearLayout
-    private lateinit var apiService: GraphQLApiService
-    private val cedulaUsuarioActual = "123456789"
+    private lateinit var apiServiceRead: GraphQLApiService
+    private lateinit var apiServiceWrite: GraphQLApiService
+    private val cedulaUsuarioActual = "1"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,14 +28,14 @@ class CrearAmistad : AppCompatActivity() {
 
         contenedorAmigos = findViewById(R.id.contenedorAmigos)
 
-        val retrofit = ApiClient.getClient()
-        apiService = retrofit.create(GraphQLApiService::class.java)
+        apiServiceRead = ApiClient.getService1().create(GraphQLApiService::class.java)
+        apiServiceWrite = ApiClient.getService2().create(GraphQLApiService::class.java)
 
         obtenerPersonasDesdeApi()
     }
 
     private fun obtenerPersonasDesdeApi() {
-        val call = apiService.getPersonas()
+        val call = apiServiceRead.getPersonas()
         call.enqueue(object : Callback<List<Persona>> {
             override fun onResponse(call: Call<List<Persona>>, response: Response<List<Persona>>) {
                 if (response.isSuccessful) {
@@ -73,7 +74,7 @@ class CrearAmistad : AppCompatActivity() {
     }
 
     private fun agregarAmistad(cedulaPersona2: String) {
-        val call = apiService.getAmistades()
+        val call = apiServiceRead.getAmistades()
         call.enqueue(object : Callback<List<Amistad>> {
             override fun onResponse(call: Call<List<Amistad>>, response: Response<List<Amistad>>) {
                 if (response.isSuccessful) {
@@ -100,10 +101,10 @@ class CrearAmistad : AppCompatActivity() {
     }
 
     private fun crearNuevaAmistad(cedulaPersona2: String) {
-        val amistad = Amistad(0, cedulaUsuarioActual, cedulaPersona2)
+        val amistad = Amistad(cedulaUsuarioActual, cedulaPersona2)
         val amistadRequest = AmistadRequest(amistad)
 
-        val call = apiService.createAmistad(amistadRequest)
+        val call = apiServiceWrite.createAmistad(amistadRequest)
         call.enqueue(object : Callback<Amistad> {
             override fun onResponse(call: Call<Amistad>, response: Response<Amistad>) {
                 if (response.isSuccessful) {

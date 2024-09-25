@@ -27,7 +27,7 @@ class CrearPersona : AppCompatActivity() {
             insets
         }
 
-        val apiService = ApiClient.getClient().create(GraphQLApiService::class.java)
+        val apiServiceWrite = ApiClient.getService2().create(GraphQLApiService::class.java)
 
         val textBox = findViewById<TextInputLayout>(R.id.cedulaCreate)
         val textBox2 = findViewById<TextInputLayout>(R.id.nombre)
@@ -42,7 +42,7 @@ class CrearPersona : AppCompatActivity() {
                 val persona = Persona(cedula = cedula, nombre = nombre)
                 val personaRequest = PersonaRequest(persona)
 
-                val call = apiService.createPersona(personaRequest)
+                val call = apiServiceWrite.createPersona(personaRequest)
                 call.enqueue(object : Callback<Persona> {
                     override fun onResponse(call: Call<Persona>, response: Response<Persona>) {
                         if (response.isSuccessful) {

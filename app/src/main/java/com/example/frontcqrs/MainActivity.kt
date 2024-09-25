@@ -24,7 +24,8 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        val apiService = ApiClient.getClient().create(GraphQLApiService::class.java)
+        val apiServiceRead = ApiClient.getService1().create(GraphQLApiService::class.java)
+        val apiServiceWrite = ApiClient.getService2().create(GraphQLApiService::class.java)
 
         val textBox = findViewById<TextInputLayout>(R.id.loginCedula)
 
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             val cedula = textBox.editText?.text.toString()
 
             if (cedula.isNotEmpty()) {
-                val call = apiService.getPersonas()
+                val call = apiServiceRead.getPersonas()
                 call.enqueue(object : Callback<List<Persona>> {
                     override fun onResponse(call: Call<List<Persona>>, response: Response<List<Persona>>) {
                         if (response.isSuccessful) {
@@ -65,13 +66,11 @@ class MainActivity : AppCompatActivity() {
             val cedulaPersona = textBox.editText?.text.toString()
 
             if (cedulaPersona.isNotEmpty()) {
-                eliminarPersonaPorCedula(apiService, cedulaPersona) // Ahora llamamos a eliminar por cédula
+                eliminarPersonaPorCedula(apiServiceWrite, cedulaPersona) // Ahora llamamos a eliminar por cédula
             } else {
                 textBox.error = "Por favor ingrese una cédula válida"
             }
         }
-
-
 
         val crearPersona = findViewById<Button>(R.id.boton7)
         crearPersona.setOnClickListener {
@@ -99,11 +98,11 @@ class MainActivity : AppCompatActivity() {
 
         val eliminarAmigo = findViewById<Button>(R.id.boton6)
         eliminarAmigo.setOnClickListener {
-            val cedulaPersona1 = "123456789"  // Cédula de la persona que está haciendo la solicitud
+            val cedulaPersona1 = "1"  // Cédula de la persona que está haciendo la solicitud
             val cedulaAmigo = textBox.editText?.text.toString()  // Cédula de la otra persona
 
             if (cedulaAmigo.isNotEmpty()) {
-                eliminarAmistad(apiService, cedulaPersona1, cedulaAmigo)
+                eliminarAmistad(apiServiceWrite, cedulaPersona1, cedulaAmigo)
             } else {
                 textBox.error = "Por favor ingrese una cédula válida"
             }
@@ -112,7 +111,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun eliminarAmistad(apiService: GraphQLApiService, cedulaPersona1: String, cedulaPersona2: String) {
-        // Crear el cuerpo de la solicitud
+        // Crear el cuerpo de la solicitud con cedulaPersona2
         val body = HashMap<String, String>()
         body["cedula_persona2"] = cedulaPersona2
 
@@ -121,8 +120,10 @@ class MainActivity : AppCompatActivity() {
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
+                    // Mostrar mensaje de éxito
                     Toast.makeText(this@MainActivity, "Amistad eliminada con éxito", Toast.LENGTH_SHORT).show()
                 } else {
+                    // Manejar error en la respuesta
                     val errorMessage = response.errorBody()?.string() ?: "Error desconocido"
                     Toast.makeText(this@MainActivity, "Error al eliminar amistad: ${response.code()} - $errorMessage", Toast.LENGTH_SHORT).show()
                     android.util.Log.e("EliminarAmistad", "Error: ${response.code()}, Response: $errorMessage")
@@ -130,17 +131,12 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
+                // Manejar fallo de conexión
                 Toast.makeText(this@MainActivity, "Error de conexión: ${t.message}", Toast.LENGTH_SHORT).show()
                 android.util.Log.e("EliminarAmistad", "Fallo en la conexión: ${t.message}")
             }
         })
     }
-
-
-
-
-
-
 
     private fun eliminarPersonaPorCedula(apiService: GraphQLApiService, cedulaPersona: String) {
         val call = apiService.deletePersona(cedulaPersona) // Llama a la ruta de escritura con la cédula
